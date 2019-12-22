@@ -8,6 +8,8 @@ The right player controls the right paddle by pressing and holding down the p ke
 The l key to move the paddle down.
 These keys were chosen since q and a are on the left side of the keyboard and p and l are on the right side so both players can share a single keyboard and not get in each others way. 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 1:
 # This is code for the pong game.
 # In this game there is a moving ball which bounces off walls.
@@ -106,6 +108,9 @@ def main():
 
 
 main()
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 Version 2:
 
@@ -229,6 +234,9 @@ def main():
 
 
 main()
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 Version 3:
 # Version 3 of pong
