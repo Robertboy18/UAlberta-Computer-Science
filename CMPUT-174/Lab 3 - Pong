@@ -1,9 +1,385 @@
-Pong
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The Pong game from Atari is one of the earliest arcade games. 
-In this lab, you will create a graphical two-player Pong game. 
-The left player controls the left paddle by pressing and holding down the q key to move the paddle up 
-The a key to move the paddle down. 
-The right player controls the right paddle by pressing and holding down the p key to move the paddle up 
-The l key to move the paddle down.
-These keys were chosen since q and a are on the left side of the keyboard and p and l are on the right side so both players can share a single keyboard and not get in each others way. 
+Version 1:
+# This is code for the pong game.
+# In this game there is a moving ball which bounces off walls.
+# There are two paddles to stop the ball from touching the walls.
+# It is two-player game.
+import pygame  # game module
+
+
+# class for the ball movement and various other aspects
+class Ball:
+    def __init__(self, surface, color, center, radius, velocity):  # constructor of the class ball
+        self.surface = surface
+        self.color = color
+        self.center = center
+        self.radius = radius
+        self.velocity = velocity
+
+    def draw(self):  # draw the circle using the various attributes of the circle
+        pygame.draw.circle(self.surface, self.color, self.center, self.radius)
+
+    def move(self):  # coordinates for the balls speed index wise per frame
+        self.center[0] = self.center[0] + self.velocity[0]
+        self.center[1] = self.center[1] + self.velocity[1]
+
+    def bounce(self):  # to change velocity according to the bounce
+        if self.center[0] + 3 > 500:
+            self.velocity[0] = - self.velocity[0]
+        if self.center[1] + 3 > 400:
+            self.velocity[1] = - self.velocity[1]
+        if self.center[0] < 3:
+            self.velocity[0] = - self.velocity[0]
+        if self.center[1] < 3:
+            self.velocity[1] = - self.velocity[1]
+
+
+def handle_events():
+    events = pygame.event.get()  # using the event thread to get the events
+    for event in events:
+        if event.type == pygame.QUIT:
+            pass
+
+
+# next class for the game
+class Game:
+    def __init__(self, surface):  # constructor of the class game
+        self.closed_clicked = True
+        self.close_clicked = False
+        self.continue_game = True
+        self.game_clock = pygame.time.Clock()
+        self.frame_per_second = 60
+        self.surface = surface
+        self.bg_color = pygame.Color('black')
+        self.ball = Ball(self.surface, pygame.Color('white'), [50, 50], 5, [5, 5])
+        self.paddle_left = pygame.Rect((100, 175), (11, 42))
+        self.paddle_right = pygame.Rect((390, 175), (11, 42))
+
+    def play(self):  # the play function
+        while not self.close_clicked:  # while the game doesnt end
+            handle_events()
+            self.draw()  # draw the objects
+            if self.continue_game:   # if the game continues
+                self.update()
+                self.decide_continue()
+            self.game_clock.tick(self.frame_per_second)
+            self.frame_counter = self.frame_per_second + 1  # increase the frame counter
+
+    def draw(self):  # the draw function
+        self.surface.fill(pygame.Color('black'))   # background color
+        self.ball.draw()
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.paddle_left)  # draw the left paddle
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.paddle_right)  # draw the right paddle
+        pygame.display.update()
+
+    def update(self):    # the update function
+        self.ball.move()
+        self.ball.bounce()  # call the bounce function
+
+    def decide_continue(self):
+        pass
+
+
+def main():
+    # Initializing pygame
+    pygame.init()
+    # Creating a graphical display and setting the title of the window
+    size = (500, 400)
+    pygame.display.set_mode(size)
+    title = 'Pong'
+    pygame.display.set_caption(title)
+    # Getting a window surface for the game
+    m_surface = pygame.display.get_surface()
+    # Creating the game object
+    game = Game(m_surface)
+    game.play()
+    pygame.quit()
+
+
+main()
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Version 2:
+
+# Version 2 of pong
+# This is a game where the ball bounces off the paddles .
+# The ball bounces off the edge and each time it does the score on each side increments
+# The game ends when either score reaches 11
+# The ball bounces off the paddles from one side and goes through from the behind
+
+import pygame  # required module
+
+
+class Ball:  # first class
+    def __init__(self, surface, color, center, radius, velocity, left_pad, right_pad):
+        self.surface = surface  # each attribute has been  initialized
+        self.color = color
+        self.center = center
+        self.radius = radius
+        self.velocity = velocity
+        self.left_pad = left_pad
+        self.right_pad = right_pad
+
+    def draw(self):  # draw the object function
+        pygame.draw.circle(self.surface, self.color, self.center, self.radius)  # draw the object
+
+    def move(self):  # move function
+        self.center[0] = self.center[0] + self.velocity[0]  # the x axis per frame movement
+        self.center[1] = self.center[1] + self.velocity[1]  # the y axis per frame movement 
+
+    def bounce(self):  # check if they bounce from the edges
+        width = self.surface.get_width()
+        height = self.surface.get_height()
+        if self.center[0] + self.radius > width or self.center[0] < self.radius:
+            self.velocity[0] = - self.velocity[0]
+        if self.center[1] < self.radius or self.center[1] + self.radius > height:
+            self.velocity[1] = - self.velocity[1]
+
+    def collision(self, left_pad, right_pad):  # check if the bounce from one side
+        if self.left_pad.collidepoint(self.center[0] + 5, self.center[1]) and self.velocity[0] > 0 or \
+                self.right_pad.collidepoint(self.center[0] + 5, self.center[1]) and self.velocity[0] < 0:
+            self.velocity[0] = -self.velocity[0]
+
+
+class Game:
+    def __init__(self, surface):  # constructor to initialize stuff
+        self.close_clicked, self.continue_game = False, True  # game attributes
+        self.game_clock = pygame.time.Clock()
+        self.frame_per_second = 60
+        self.surface = surface
+        self.bg_color = pygame.Color('black')
+        self.paddle_y, self.paddle1_x, self.paddle2_x = 175, 100, 390  # paddle attributes
+        self.right_pad = pygame.Rect((self.paddle1_x, self.paddle_y), (10, 50))
+        self.left_pad = pygame.Rect((self.paddle2_x, self.paddle_y), (10, 50))
+        self.score_1, self.score_2 = 0, 0  # score attributes
+        self.center, self.velocity = [100, 250], [5, 2]
+        self.ball = Ball(self.surface, pygame.Color('white'), self.center, 5, self.velocity, self.left_pad,
+                         self.right_pad)
+
+    def play(self):  # play the game
+        while not self.close_clicked:
+            self.handle_events()  # handle the events by calling the function
+            self.draw()
+            if self.continue_game:  # game condition
+                self.update()
+                self.decide_continue()  # end game condition
+            self.game_clock.tick(self.frame_per_second)
+
+    def handle_events(self):  # handle the events
+        events = pygame.event.get()  # event queue
+        for event in events:
+            if event.type == pygame.QUIT:  # end game
+                self.close_clicked = True
+
+    def draw(self):  # draw the paddles
+        self.surface.fill(pygame.Color('black'))
+        self.ball.draw()  # draw the ball
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.left_pad)  # draw the right paddle
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.right_pad)  # draw the left paddle
+        self.draw_score()  # draw the score
+        pygame.display.update()
+
+    def draw_score(self):  # draw the score
+        font = pygame.font.SysFont('', 60)
+        score_text1 = font.render(str(self.score_1), True, pygame.Color('white'))
+        location_left = [20, 0]  # paddle location
+        self.surface.blit(score_text1, location_left)
+        score_text2 = font.render(str(self.score_2), True, pygame.Color('white'))
+        location_right = [450, 0]  # paddle location
+        self.surface.blit(score_text2, location_right)
+
+    def update(self):  # function to check if the game gets updated
+        self.ball.bounce()
+        self.ball.move()
+        self.ball.collision(self.left_pad, self.right_pad)
+        ball_radius = 5
+        if self.center[0] + ball_radius > 500:  # check edge bounce
+            self.score_1 += 1
+        if self.center[0] < ball_radius:  # check edge bounce
+            self.score_2 += 1
+
+    def decide_continue(self):  # end game condition
+        if self.score_1 >= 11 or self.score_2 >= 11:
+            self.continue_game = False
+
+
+def main():
+    # initialize all pygame modules (some need initialization)
+    pygame.init()
+    # create a pygame display window
+    pygame.display.set_mode((500, 400))
+    # set the title of the display window
+    pygame.display.set_caption('Pong')
+    # get the display surface
+    w_surface = pygame.display.get_surface()
+    # create a game object
+    game = Game(w_surface)
+    # start the main game loop by calling the play method on the game object
+    game.play()
+    # quit pygame and clean up the pygame_ window
+    pygame.quit()
+
+
+main()
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Version 3:
+# Version 3 of pong
+# This is a game where the ball bounces off the paddles .
+# The ball bounces off the edge and each time it does the score on each side increments
+# The game ends when either score reaches 11
+# The ball bounces off the paddles from one side and goes through from the behind
+# We can control the paddles and is a two player game 
+
+
+import pygame  # required module
+
+
+class Ball:  # An object in this class represents a ball that moves
+    def __init__(self, surface, color, center, radius, velocity):
+        self.surface = surface  # each attribute has been  initialized
+        self.color = color
+        self.center = center
+        self.radius = radius
+        self.velocity = velocity
+
+    def draw(self):
+        # Draw the ball on the surface
+        # - self is the ball
+        pygame.draw.circle(self.surface, self.color, self.center, self.radius)  # draw the ball
+
+    def move(self):
+        # Change the location of the ball by adding the corresponding
+        # speed values to the x and y coordinate of its center
+        # - self is the ball
+        for i in range(2):
+            self.center[i] = self.center[i] + self.velocity[i]  # axis movement
+
+    def bounce(self):  # check if they bounce from the edges
+        width = self.surface.get_width()
+        height = self.surface.get_height()
+        if self.center[0] + self.radius > width or self.center[0] < self.radius:
+            self.velocity[0] = - self.velocity[0]
+        if self.center[1] < self.radius or self.center[1] + self.radius > height:
+            self.velocity[1] = - self.velocity[1]
+
+
+class Game:
+    def __init__(self, surface):  # constructor of the class
+        self.close_clicked, self.continue_game = False, True  # game attributes
+        self.game_clock = pygame.time.Clock()
+        self.frame_per_second = 60
+        self.surface = surface
+        self.bg_color = pygame.Color('black')
+        self.pad1y, self.pad2y, self.pad1x, self.pad2x = 175, 175, 100, 390  # paddle attributes
+        self.right_paddle = pygame.Rect((self.pad1x, self.pad1y), (10, 50))
+        self.left_paddle = pygame.Rect((self.pad2x, self.pad2y), (10, 50))
+        self.score1, self.score2 = 0, 0  # score attributes
+        self.center, self.velocity = [350, 250], [5, 2]
+        self.ball = Ball(self.surface, pygame.Color('white'), self.center, 5, self.velocity)
+        self.pad1vel, self.pad2vel = 0, 0
+
+    def play(self):  # play game func
+        while not self.close_clicked:
+            self.handle_events()  # handle the events
+            self.draw()
+            if self.continue_game:  # not false
+                self.update()
+                self.decide_continue()  # keep on checking end game condition
+            self.game_clock.tick(self.frame_per_second)  # fps counter
+
+    def handle_events(self):  # events function
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                self.close_clicked = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:  # q button pressed up paddle 1
+                    self.pad1vel += 4
+                if event.key == pygame.K_a:  # a button pressed down paddle 1
+                    self.pad1vel -= 4
+                if event.key == pygame.K_p:  # p button pressed up paddle 2
+                    self.pad2vel += 4
+                if event.key == pygame.K_l:  # i button pressed up paddle 2
+                    self.pad2vel -= 4
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_q or event.key == pygame.K_a:
+                    self.pad1vel = 0
+                if event.key == pygame.K_p or event.key == pygame.K_l:
+                    self.pad2vel = 0
+
+    def draw(self):  # draw func
+        self.surface.fill(pygame.Color('black'))  # background color
+        self.ball.draw()  # draw the ball
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.left_paddle)  # left paddle draw
+        pygame.draw.rect(self.surface, pygame.Color('white'), self.right_paddle)  # right paddle draw
+        self.draw_score()  # draw the score
+        pygame.display.update()
+
+    def collision(self, left_paddle, right_paddle):  # check if the bounce from one side
+        if self.left_paddle.collidepoint(self.center[0], self.center[1]) and self.velocity[0] > 0 or \
+                self.right_paddle.collidepoint(self.center[0] - 10, self.center[1]) and self.velocity[0] < 0:
+            self.velocity[0] = -self.velocity[0]
+
+    def draw_score(self):  # func to draw
+        font = pygame.font.SysFont('', 60)
+        score_box1 = font.render(str(self.score1), True, pygame.Color('white'))
+        location_score1 = [20, 0]  # location of score 1
+        self.surface.blit(score_box1, location_score1)
+        score_box2 = font.render(str(self.score2), True, pygame.Color('white'))
+        location_score2 = [450, 0]  # location of score 2
+        self.surface.blit(score_box2, location_score2)
+
+    def update(self):  # update func
+        self.ball.move()  # move the balls
+        self.ball.bounce()  # check bounce condition
+        if self.center[0] + 5 > 500:
+            self.score1 += 1
+        if self.center[0] < 5:
+            self.score2 += 1
+        self.move_paddles()  # move the paddles
+
+    def move_paddles(self):  # functions to move the paddles
+        self.pad1y = self.pad1vel + self.pad1y  # paddle 1
+        self.pad2y = self.pad2vel + self.pad2y  # paddle 2
+        # checking boundary conditions so that the paddles don't go out of the window
+        if self.pad1y < 0:
+            self.pad1y = 0
+        if self.pad1y > 350:
+            self.pad1y = 350
+        if self.pad2y < 0:
+            self.pad2y = 0
+        if self.pad2y > 350:
+            self.pad2y = 350
+        paddle_attribute = (10, 50)  # width and height
+        self.right_paddle = pygame.Rect((self.pad1x, self.pad1y), paddle_attribute)
+        self.left_paddle = pygame.Rect((self.pad2x, self.pad2y), paddle_attribute)
+        self.collision(self.left_paddle, self.right_paddle)
+
+    def decide_continue(self):  # end game condition
+        if self.score1 >= 11 or self.score2 >= 11:
+            self.continue_game = False
+
+
+def main():
+    # Initializing pygame module
+    pygame.init()
+    # Creating a graphical display and setting the title of the window
+    size = (500, 400)
+    pygame.display.set_mode(size)
+    title = 'Pong'
+    pygame.display.set_caption(title)
+    # Getting a window surface for the game
+    m_surface = pygame.display.get_surface()
+    # Creating the game object
+    game = Game(m_surface)
+    game.play()
+    pygame.quit()
+
+
+main()
