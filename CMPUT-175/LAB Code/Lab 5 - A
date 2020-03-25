@@ -1,0 +1,108 @@
+from stack import Stack, entryException
+
+
+class actionException(Exception):
+    def __init__(self, str):
+        self.string = str
+
+
+def getAction():
+    '''
+    This function asks for a valid input and returns the valid string
+
+    Inputs: None
+    Returns: User input
+    '''
+    userInput = input('Enter = to enter a URL, < to go back, > to go forward, q to quit: ')
+    if userInput not in ['=', '<', '>', 'q']:
+        raise actionException('Invalid Entry')
+
+    return userInput
+
+
+def goToNewSite(current, bck, fwd):
+    '''
+    This function accepts a valid URL and appends it into the list pages and increments current.
+
+    Inputs: Back stack ,forward stack
+    Returns: current index
+    '''
+    if fwd.size() > 0:
+        fwd.clear()
+    url = input('URL: ')
+    bck.push(url)
+    current = url
+    return current
+
+
+def goBack(current, bck, fwd):
+    """
+    This function goes back and displays the current URL
+
+    Inputs: Back stack, forward stack
+    Returns: current website
+    """
+    try:
+        website = bck.pop()
+        fwd.push(website)
+        return bck.peek()
+    except entryException:
+        print('Cannot go back')
+        return current
+
+
+def goForward(current, bck, fwd):
+    """
+    This function goes forward and returns the current index
+
+    Inputs: Back and forward stacks
+    Returns: current website
+    """
+    try:
+        website = fwd.pop()
+        bck.push(website)
+        return bck.peek()
+    except entryException:
+        print('Cannot go forward')
+        return current
+
+
+def main():
+    """
+    Controls main flow of web browser simulator
+    Inputs: N/A
+    Returns: None
+    """
+    HOME = 'www.cs.ualberta.ca'
+    back = Stack()
+    forward = Stack()
+
+    current = HOME
+    back.push(current)
+    quit = False
+
+    while not quit:
+        print('\nCurrently viewing', current)
+        """print(back,"back")
+        print(forward,"forward")"""
+        try:
+            action = getAction()
+
+        except Exception as actionException:
+            print(actionException.args[0])
+
+        else:
+            if action == '=':
+                current = goToNewSite(current, back, forward)
+            elif action == '<':
+                current = goBack(current, back, forward)
+            elif action == '>':
+                current = goForward(current, back, forward)
+            elif action == 'q':
+                quit = True
+
+    print('Browser closing...goodbye.')
+
+
+if __name__ == "__main__":
+    main()
