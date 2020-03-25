@@ -1,0 +1,102 @@
+def getAction():
+    """
+    This function asks for a valid input and returns the valid string
+    :return: None
+    """
+    # TO DO: delete pass and write your code here
+    while True:
+        x = input("Enter = to enter a URL, < to go back, > to go forward, q to quit:")
+        if x == 'q' or x == '<' or x == '>' or x == '=':
+            return x
+        else:
+            print("Invalid entry.")
+            #continue
+
+
+def goToNewSite(current, pages):
+    """
+    This function accepts a valid URL and appends it into the list pages and increments current.
+
+    It checks when to pop and retain the information 
+    :param current:
+    :param pages:
+    :return: current
+    """
+    # TO DO: delete pass and write your code here
+    z = input("URL:")
+    m = len(pages) - (current + 1)
+    if m == 0:
+        pages.append(z)
+        #print(pages)
+        current += 1
+        return current
+    else:
+        for i in range(m):
+            pages.pop()
+        pages.append(z)
+        #print(pages)
+        return current + 1
+
+
+def goBack(current, pages):
+    """
+    This function goes back and displays the current URL
+    :param current:
+    :param pages:
+    :return:
+    """
+    # TO DO: delete pass and write your code here
+    if len(pages) == 1 or current == 0:
+        print("Cannot go back")
+        return current
+    else:
+        return current - 1
+
+
+def goForward(current, pages):
+    """
+    This function goes forward and returns the current index
+    :param current:
+    :param pages:
+    :return:
+    """
+    # TO DO: delete pass and write your code here
+    if len(pages) == 1 or (current + 1) == len(pages):
+        print("Cannot go forward")
+        return current
+    else:
+        return current + 1
+
+
+def main():
+    '''
+    Controls main flow of web browser simulator
+    Inputs: N/A
+    Returns: None
+    '''
+    HOME = 'www.cs.ualberta.ca'
+    websites = [HOME]
+    currentIndex = 0
+    quit = False
+
+    while not quit:
+        print('\nCurrently viewing', websites[currentIndex])
+        action = getAction()
+
+        if action == '=':
+            currentIndex = goToNewSite(currentIndex, websites)
+            #print(currentIndex)
+        elif action == '<':
+            currentIndex = goBack(currentIndex, websites)
+            #print(currentIndex)
+        elif action == '>':
+            currentIndex = goForward(currentIndex, websites)
+            #print(currentIndex)
+        elif action == 'q':
+            quit = True
+
+    print('Browser closing...goodbye.')
+
+
+if __name__ == "__main__":
+    main()
