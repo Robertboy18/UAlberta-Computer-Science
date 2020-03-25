@@ -40,4 +40,24 @@ Our emphasis will be more on computation and problem solving than all the detail
 >CMPUT 174, SCI 100, or consent of the instructor. Basic knowledge of Python is assumed.
 
 
+**Formal Systems and Logic in Computing Science - CMPUT 272**
+
+**Overview**
+
+>An introduction to the tools of set theory, logic,
+and induction, and their use in the practice of reasoning about algorithms and programs. Basic
+set theory. The notion of a function. Counting. Propositional and predicate logic and their proof
+systems. Inductive definitions and proofs by induction. Program specification and correctness
+
+**Objectives**
+
+>Problem solving and discrete mathematics underlie every aspect of computing science,
+from the design of hardware and software to the theory of computation. In CMPUT 272, students
+learn the fundamentals of discrete mathematics and use that knowledge to solve problems and
+communicate the correctness of their solutions.
+
+**Prequistes**
+
+>Any 100-level CMPUT course or SCI 100 or CMPUT 274
+
 
