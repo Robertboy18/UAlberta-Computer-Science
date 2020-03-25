@@ -40,6 +40,9 @@ Our emphasis will be more on computation and problem solving than all the detail
 >CMPUT 174, SCI 100, or consent of the instructor. Basic knowledge of Python is assumed.
 
 
+
+
+
 **Formal Systems and Logic in Computing Science - CMPUT 272**
 
 **Overview**
