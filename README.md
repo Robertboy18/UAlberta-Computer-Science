@@ -2,6 +2,8 @@
 
 These are all the Computer Science Courses I am taking in my first year.
 
+**Fall Semester**
+
 **Introduction to the Foundations of Computation I- CMPUT 174**
 
 **Overview**
@@ -18,6 +20,7 @@ Students will learn how to use infrastructure tools and resources to solve compu
 >Pure Math 30 or Math 30-1
 
 
+**Winter Semester**
 
 **Introduction to the Foundations of Computation II- CMPUT 175**
 
