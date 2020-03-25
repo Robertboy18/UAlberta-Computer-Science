@@ -1,0 +1,31 @@
+# function to open file and read
+def display_instructions(filename):
+    mode_read = 'r+'  # assign the read mode
+    instruction_txt_file = open(filename, mode_read)
+    instructions = instruction_txt_file.read()  # read the contents
+    instruction_txt_file.close()
+    return instructions.split("\n")  # return the split lines
+
+
+# function to print the desired format
+def print_format(lower, upper, outfile, original_list):
+    outfile.write("[" + str(lower) + "-" + str(upper) + " mm)" + "\n")
+    for each_v in range(len(original_list)):
+        value = float(original_list[each_v][1])  # convert to float
+        if lower <= value <= upper:  # to compare the value within the range
+            new = str("%.1f" % value)  # convert to 2 decimal
+            outfile.write("%+15s" % (original_list[each_v][0]) + "%10s" % new + "\n")  # write into the file format
+
+
+display = display_instructions("rainfall.txt")
+final_list = []
+# loop for making a double list
+for each_value in display:
+    each_line = each_value.split(" ")
+    final_list.append(each_line)
+final_list.sort(key=lambda j: str(j[1]))  # sort the list by the last values
+new_file = open("rainfallfmt.txt", "w+")  # open the new file for writing
+# loop for writing the formatted list into the file
+for each_value in [50, 60, 70, 80, 90]:
+    print_format(each_value, each_value + 10, new_file, final_list)
+new_file.close()
