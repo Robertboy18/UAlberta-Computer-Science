@@ -1,0 +1,301 @@
+# ----------------------------------------------------
+# Assignment 2: Tic Tac Toe classes
+#
+# Author: Robert Joseph
+# Collaborators: No one
+# References: Lab 3 Code
+# ----------------------------------------------------'''
+
+
+# importing the required files
+from assignement2 import *
+
+
+def handle(player_Update):
+    """
+    This function handles the main global board handling for input and validation.
+
+    It checks for a valid Input and asks the user to enter a valid row number and column number.
+    Any Error would be handled and the while loop will run until a valid entry.
+
+    :param player_Update:
+    :return: player1_r, player1_c
+    """
+    global t
+    try:
+        player1_r = (input("Player " + str(player_Update + 1) + " please enter a row: "))
+        while str(player1_r) >= str(3):
+            print("Error Code: Out of Bound")
+            player1_r = int(input("Player " + str(player_Update + 1) + " please enter a row: "))
+        player1_c = (input("Player " + str(player_Update + 1) + " please enter a column: "))
+        while str(player1_c) >= str(3):
+            print("Error Code: Out of Bound/Not Valid ")
+            player1_c = int(input("Player " + str(player_Update + 1) + " please enter a column: "))
+
+    except InterruptedError:
+        pass
+
+    return [player1_r, player1_c]
+
+
+def print_Initial():
+    """
+    This function prints out the required starting information.
+
+    :return: None
+    """
+    print("-" * 34)
+    print("Starting new Meta Tic Tac Toe game")
+    print("-" * 34, "", sep="\n")
+
+
+def numerical_Board(myDesBoard, myBoardFinal, initial, player_Update):
+    """
+    This function handles the Numerical Board game.
+
+    It accepts 4 parameters and accordingly plays the game and validates the user's entry.
+    A winner is decided if any row column diagonal sum up to 15.
+    Once a valid input has been entered the local board gets updated.
+    If its a win by player 1 X gets updated in the global board.
+    If its a win by player 2 O gets updated in the global board.
+    If its a draw D gets updated in the global board.
+    It then returns the global player counter to keep track.
+
+    :param myDesBoard:
+    :param myBoardFinal:
+    :param initial:
+    :param player_Update:
+    :return: player_Update
+    """
+
+    print("This is a Numerical Tic Tac Toe.", "", sep="\n")
+    myDesBoard.drawBoard()
+    first_Counter, second_Counter, main_Check = [0, 0, 0]
+    odd_L, even_L = [], []
+    if main_Check == 0:
+        while not myDesBoard.boardFull():
+            if second_Counter == 0:
+                if first_Counter == 0:
+                    try:
+                        player_Update = int(input("Player " + str(first_Counter + 1) + \
+                                                  " please enter an odd number (""1-9): "))
+                        if player_Update not in odd_L:
+                            odd_L.append(player_Update)
+                        else:
+                            print("Number already entered")
+                            continue
+                        print(odd_L)
+                        while player_Update % 2 == 0:
+                            print("Error Code: An even number Entered")
+                            player_Update = int(input("Player " + str(first_Counter + 1) + " please enter an odd "
+                                                                                           "number (1-9): "))
+                            odd_L.append(player_Update)
+                        player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        while str(player1) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                        while str(player2) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+
+                    except ValueError:
+                        print("You didn't enter a number")
+                        pass
+                else:
+                    try:
+                        player_Update = int(
+                            input("Player " + str(first_Counter + 1) + " please enter an even number (1-9): "))
+                        if player_Update not in even_L:
+                            even_L.append(player_Update)
+                        else:
+                            print("Number already entered")
+                            continue
+                        print(even_L)
+                        while player_Update % 2 != 0:
+                            print("Error Code: An odd number Entered")
+                            player_Update = int(
+                                input("Player " + str(first_Counter + 1) + " please enter an even number (1-9): "))
+                            even_L.append(player_Update)
+                        player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        while str(player1) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                        while str(player2) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+
+                    except ValueError:
+                        print("You didn't enter a number")
+                        continue
+            else:
+                main_Check = 1
+                break
+            myDesBoard.update(player1, player2, player_Update)
+            myDesBoard.drawBoard()
+            if myDesBoard.isWinner():
+                print("Player " + str(first_Counter + 1) + " Wins. Congrats!")
+                second_Counter = 1
+                if first_Counter == 0:
+                    myBoardFinal.update(int(initial[0]), int(initial[1]), 'X')
+                else:
+                    myBoardFinal.update(int(initial[0]), int(initial[1]), 'O')
+                    break
+            if myDesBoard.boardFull():
+                print("Its a Tie")
+                myBoardFinal.update(int(initial[0]), int(initial[1]), 'D')
+            first_Counter += 1
+            first_Counter = first_Counter % 2
+    else:
+        pass
+    player_Update += 1
+    player_Update = player_Update % 2
+    return player_Update
+
+
+def classical_Board(myDesBoard, myBoardFinal, initial, player_Update, t):
+    """
+    This function handles the classical Board game.
+
+    It accepts 4 parameters and accordingly plays the game and validates the user's entry.
+    A winner is when any row column diagonal have the same letter.
+    Once a valid input has been entered the local board gets updated.
+    If its a win by player 1 X gets updated in the global board.
+    If its a win by player 2 O gets updated in the global board.
+    If its a draw D gets updated in the global board.
+    It then returns the global player counter to keep track.
+
+    :param myDesBoard:
+    :param myBoardFinal:
+    :param initial:
+    :param player_Update:
+
+    :return: player_Update
+
+    """
+    print("This is a Classical Tic Tac Toe.", "", sep="\n")
+    myDesBoard.drawBoard()
+    first_Counter, second_Counter, main_Check = [0, 0, 0]
+    if main_Check == 0:
+        while not myDesBoard.boardFull():
+            if second_Counter == 0:
+                if first_Counter == 0:
+                    try:
+                        player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        while str(player1) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                        while str(player2) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                        break_Counter = 1
+                    except ValueError:
+                        print("You didn't enter a number")
+                        continue
+                else:
+                    try:
+                        player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        while str(player1) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player1 = int(input("Player " + str(first_Counter + 1) + " please enter a row: "))
+                        player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                        while str(player2) >= str(3):
+                            print("Error Code: Out of Bound")
+                            player2 = int(input("Player " + str(first_Counter + 1) + " please enter a column: "))
+                    except ValueError:
+                        print("You didn't enter a number")
+                        continue
+            else:
+                main_Check = 1
+                break
+            if main_Check == 0:
+                if break_Counter == 1:
+                    myDesBoard.update(player1, player2, 'X')
+                    myDesBoard.drawBoard()
+                else:
+                    myDesBoard.update(player1, player2, 'O')
+                    myDesBoard.drawBoard()
+            else:
+                break
+            break_Counter = 0
+            if myDesBoard.isWinner():
+                print("Player " + str(first_Counter + 1) + " Wins. Congrats!", "", sep="\n")
+                second_Counter = 1
+                if first_Counter == 0:
+                    myBoardFinal.update(int(initial[0]), int(initial[1]), 'X')
+                    main_Check = 1
+                    break
+                else:
+                    myBoardFinal.update(int(initial[0]), int(initial[1]), 'O')
+                    main_Check = 1
+                    break
+            if myDesBoard.boardFull():
+                print("Its a Tie")
+                myBoardFinal.update(int(initial[0]), int(initial[1]), 'D')
+            first_Counter += 1
+            first_Counter = first_Counter % 2
+
+    player_Update += 1
+    player_Update = player_Update % 2
+    return player_Update
+
+
+def game():
+    """
+    This function plays the main game and handles all the other required functions.
+
+    It runs the game once and if the player enters Y it plays the game again otherwise quits and ends the game.
+    It first gets the local board instance and then the isNum() function checks if its a c or n board.
+    It then plays and calls the required functions to play the game
+    The final Board gets updated and if there is a winner it displays.
+    If its a tie the winner gets displayed.
+
+    :return: None
+    """
+    [player_Update, n, second_Counter, game_Loop] = [0, 0, 1, 1]
+    t = 0
+    while game_Loop == 1:
+        print_Initial()
+        myBoardFinal = MetaTicTacToe("MetaTTTconfig.txt")
+        while myBoardFinal.boardFull():
+            if myBoardFinal.isWinner():
+                print("Player " + str(n + 1) + " wins the Meta Tic Tac Toe game. GOOD GAME!")
+                break
+            if not myBoardFinal.boardFull():
+                print("Player " + str(n + 1) + " wins the Meta Tic Tac Toe game. GOOD GAME!")
+                myBoardFinal.drawBoard()
+                break
+            myBoardFinal.drawBoard()
+            initial = handle(player_Update)
+            print("-" * 34)
+            if myBoardFinal.getLocalBoard((int(initial[0])), (int(initial[1]))) is None:
+                print("Already entered")
+                continue
+            else:
+                myDesBoard = myBoardFinal.getLocalBoard((int(initial[0])), (int(initial[1])))
+                if myDesBoard.isNum():
+                    player_Update = numerical_Board(myDesBoard, myBoardFinal, initial, player_Update)
+                else:
+                    player_Update = classical_Board(myDesBoard, myBoardFinal, initial, player_Update)
+        game_Continue = input("Do you want to play another game? (Y/N) ")
+        if game_Continue == 'N':
+            game_Loop = 0
+            print("Thanks for playing! Goodbye.")
+            break
+        else:
+            del myBoardFinal
+            continue
+
+
+def main():
+    """
+    This function calls the required functions and plays the Game.
+
+    :return:None
+    """
+    game()
+
+
+main()
