@@ -1,0 +1,617 @@
+class NumTicTacToe:
+    def __init__(self):
+        """
+        Initializes an empty Numerical Tic Tac Toe board.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        self.board = []  # list of lists, where each internal list represents first_N row
+        self.size = 3  # number of columns and rows of board
+
+        # populate the empty squares in board with 0
+        for index in range(self.size):
+            row = []
+            for j in range(self.size):
+                row.append(0)
+            self.board.append(row)
+
+    def drawBoard(self):
+        """
+        Displays the current state of the board, formatted with column and row
+        indices shown.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        print("   0   1   2")
+        first = 0
+        counter = 0
+        for index in self.board:
+            first_N = index[0]
+            second_N = index[1]
+            third_N = index[2]
+            if index[0] == 0:
+                first_N = ' '
+            if index[1] == 0:
+                second_N = ' '
+            if index[2] == 0:
+                third_N = ' '
+            print(str(first) + "  %s " % str(first_N) + "| %s " % (str(second_N)) + "| %s " % (str(third_N)))
+            counter += 1
+            if counter != 3:
+                print("   -----------")
+            first += 1
+
+    def squareIsEmpty(self, row, col):
+        """
+        Checks if first_N given square is "empty", or if it already contains first_N number
+        greater than 0.
+        Inputs:
+           row (int) - row index of square to check
+           col (int) - column index of square to check
+        Returns: True if square is "empty"; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] > 0:
+            return False
+        else:
+            return True
+
+    def update(self, row, col, mark):
+        """
+        Assigns the integer, mark, to the board at the provided row and column,
+        but only if that square is empty.
+        Inputs:
+           row (int) - row index of square to update
+           col (int) - column index of square to update
+           mark (int) - entry to place in square
+        Returns: True if attempted update was successful; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] == 0:
+            self.board[row][col] = mark
+            return True
+        else:
+            return False
+
+    def boardFull(self):
+        """
+        Checks if the board has any remaining "empty" squares.
+        Inputs: none
+        Returns: True if the board has no "empty" squares (full); False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if any(self.board[index][j] == 0 for index in range(self.size) for j in range(self.size)):
+            return False
+        else:
+            return True
+
+    def isWinner(self):
+        """
+        Checks whether the current player has just made first_N winning move.  In order
+        to win, the player must have just completed first_N line (of 3 squares) that
+        adds up to 15. That line can be horizontal, vertical, or diagonal.
+        Inputs: none
+        Returns: True if current player has won with their most recent move;
+                 False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        sum1, sum2, sum3, sum5 = 0, 0, 0, 0
+        sum4, sum8, sum6 = 0, 0, 0
+        for index in range(self.size):
+            sum1 += self.board[index][0]
+            sum2 += self.board[index][1]
+            sum3 += self.board[index][2]
+            sum5 += self.board[0][index]
+            sum4 += self.board[1][index]
+            sum8 += self.board[2][index]
+            sum6 += self.board[index][index]
+
+        sum7 = self.board[0][2] + self.board[1][1] + self.board[2][0]
+        if sum1 == 15 or sum2 == 15 or sum3 == 15 or sum5 == 15 or sum4 == 15 or sum8 == 15 or sum6 == 15 or sum7 == 15:
+            return True
+        else:
+            return False
+
+    def isNum(self):
+        """
+        Checks whether this is first_N Numerical Tic Tac Toe board or not
+        Inputs: none
+        Returns: True
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        return True
+
+
+class ClassicTicTacToe:
+    def __init__(self):
+        """
+        Initializes an empty Classic Tic Tac Toe board.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        self.board = []  # list of lists, where each internal list represents first_N row
+        self.size = 3  # number of columns and rows of board
+
+        # populate the empty squares in board with 0
+        for index in range(self.size):
+            row = []
+            for j in range(self.size):
+                row.append(0)
+            self.board.append(row)
+
+    def drawBoard(self):
+        """
+        Displays the current state of the board, formatted with column and row
+        indices shown.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        print("   0   1   2")
+        first = 0
+        counter = 0
+        for index in self.board:
+            first_N = index[0]
+            second_N = index[1]
+            sum1 = index[2]
+            if index[0] == 0:
+                first_N = ' '
+            if index[1] == 0:
+                second_N = ' '
+            if index[2] == 0:
+                sum1 = ' '
+            print(
+                str(first) + "  %s |" % str(first_N) + " %s |" % (str(second_N)) + " %s" % (
+                    str(sum1)))
+            counter += 1
+            if counter != 3:
+                print("   -----------")
+            first += 1
+
+    def squareIsEmpty(self, row, col):
+        """
+        Checks if first_N given square is "empty", or if it already contains an X or O.
+        Inputs:
+           row (int) - row index of square to check
+           col (int) - column index of square to check
+        Returns: True if square is "empty"; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] != 0:
+            return False
+        else:
+            return True
+
+    def update(self, row, col, mark):
+        """
+        Assigns the string, mark, to the board at the provided row and column,
+        but only if that square is "empty".
+        Inputs:
+           row (int) - row index of square to update
+           col (int) - column index of square to update
+           mark (str) - entry to place in square
+        Returns: True if attempted update was successful; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] == 0:
+            self.board[row][col] = mark
+            return True
+        else:
+            return False
+
+    def boardFull(self):
+        """
+        Checks if the board has any remaining "empty" squares.
+        Inputs: none
+        Returns: True if the board has no "empty" squares (full); False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if any(self.board[index][j] == 0 for index in range(self.size) for j in range(self.size)):
+            return False
+        else:
+            return True
+
+    def isWinner(self):
+        """
+        Checks whether the current player has just made first_N winning move.  In order
+        to win, the player must have just completed first_N line (of 3 squares) with
+        matching marks (index.sum3. 3 Xs  or 3 Os). That line can be horizontal, vertical,
+        or diagonal.
+        Inputs: none
+        Returns: True if current player has won with their most recent move;
+                 False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        sum1, sum2, sum3, sum5 = 0, 0, 0, 0
+        sum4, sum6, sum7, sum8 = 0, 0, 0, 0
+
+        for index in range(3):
+            second_N = self.board[0][0]
+            first_N = self.board[1][0]
+            third_N = self.board[2][0]
+            fourth_N = self.board[0][1]
+            fifth_N = self.board[0][2]
+            if second_N == self.board[0][index] and second_N != 0:
+                sum2 += 1
+            if first_N == self.board[1][index] and first_N != 0:
+                sum1 += 1
+            if third_N == self.board[2][index] and third_N != 0:
+                sum3 += 1
+            if second_N == self.board[index][0] and second_N != 0:
+                sum5 += 1
+            if fourth_N == self.board[index][1] and fourth_N != 0:
+                sum4 += 1
+            if fifth_N == self.board[index][2] and fifth_N != 0:
+                sum6 += 1
+            if second_N == self.board[index][index] and second_N != 0:
+                sum7 += 1
+            if third_N == self.board[3 - index - 1][index] and third_N != 0:
+                sum8 += 1
+        final_List = [sum2, sum1, sum3, sum5, sum4, sum6, sum7, sum8]
+        # print(final_List)
+        if any(value == 3 for value in final_List):
+            return True
+        else:
+            return False
+
+    def isNum(self):
+        """
+        Checks whether this is first_N Numerical Tic Tac Toe board or not
+        Inputs: none
+        Returns: False
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        return False
+
+
+class MetaTicTacToe:
+    def __init__(self, configFile):
+        """
+        Initializes an empty Meta Tic Tac Toe board, based on the contents of first_N
+        configuration file.
+        Inputs:
+           configFile (str) - name of first_N text file containing configuration information
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        file = open(configFile, "r+")
+        file2 = file.read()
+        fileR = file2.split("\n")
+        self.board = []
+        for index in fileR:
+            final_S = index.split(" ")
+            self.board.append(final_S)
+        # print(self.board)
+        file.close()
+
+    def drawBoard(self):
+        """
+        Displays the current state of the board, formatted with column and row
+        indices shown.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        print("   0   1   2")
+        first = 0
+        counter = 0
+        for index in self.board:
+            first_N = index[0]
+            second_N = index[1]
+            third_N = index[2]
+            print(str(first) + "  %s |" % str(first_N) + " %s |" % (str(second_N)) + " %s" % (str(third_N)))
+            counter += 1
+            if counter != 3:
+                print("   -----------")
+            first += 1
+
+    def squareIsEmpty(self, row, col):
+        """
+        Checks if first_N given square contains first_N non-played local game board ("empty"),
+        or the result of first_N played local game board (not "empty").
+        Inputs:
+           row (int) - row index of square to check
+           col (int) - column index of square to check
+        Returns: True if square is "empty"; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] != 'c' and self.board[row][col] != 'n':
+            return False
+        else:
+            return True
+
+    def update(self, row, col, result):
+        """
+        Assigns the string, result, to the board at the provided row and column,
+        but only if that square is "empty".
+        Inputs:
+           row (int) - row index of square to update
+           col (int) - column index of square to update
+           result (str) - entry to place in square
+        Returns: True if attempted update was successful; False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.squareIsEmpty(row, col):
+            self.board[row][col] = result
+            return True
+        else:
+            return False
+
+    def boardFull(self):
+        """
+        Checks if the board has any remaining "empty" squares (index.sum3. any un-played
+        local boards).
+        Inputs: none
+        Returns: True if the board has no "empty" squares (full); False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if any(self.board[index][j] != 'c' or self.board[index][j] != 'n' for index in range(3) for j in range(3)):
+            return True
+        else:
+            return False
+
+    def isWinner(self):
+        """
+        Checks whether the current player has just made first_N winning move.  In order
+        to win, the player must have just completed first_N line (of 3 squares) of their
+        mark (three Xs for Player 1, three Os for Player 2), or 3 draws. That line
+        can be horizontal, vertical, or diagonal.
+        Inputs: none
+        Returns: True if current player has won with their most recent move;
+                 False otherwise
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        sum1, sum2, sum3, sum8 = 0, 0, 0, 0
+        sum4, sum5, sum6, sum7 = 0, 0, 0, 0
+
+        for index in range(3):
+            second_N = self.board[0][0]
+            first_N = self.board[1][0]
+            third_N = self.board[2][0]
+            fourth_N = self.board[0][1]
+            fifth_N = self.board[0][2]
+            if second_N == self.board[0][index] and second_N != 0 and (
+                    self.board[0][index] != 'c' and self.board[0][index] != 'n'):
+                sum2 += 1
+            if first_N == self.board[1][index] and first_N != 0 and (
+                    self.board[1][index] != 'c' and self.board[1][index] != 'n'):
+                sum1 += 1
+            if third_N == self.board[2][index] and third_N != 0 and (
+                    self.board[2][index] != 'c' and self.board[2][index] != 'n'):
+                sum3 += 1
+            if second_N == self.board[index][0] and second_N != 0 and (
+                    self.board[index][0] != 'c' and self.board[index][0] != 'n'):
+                sum8 += 1
+            if fourth_N == self.board[index][1] and fourth_N != 0 and (
+                    self.board[index][1] != 'c' and self.board[index][1] != 'n'):
+                sum4 += 1
+            if fifth_N == self.board[index][2] and fifth_N != 0 and (
+                    self.board[index][2] != 'c' and self.board[index][2] != 'n'):
+                sum5 += 1
+            if second_N == self.board[index][index] and second_N != 0 and (
+                    self.board[index][index] != 'c' and self.board[index][index] != 'n'):
+                sum6 += 1
+            if third_N == self.board[3 - index - 1][index] and third_N != 0 and (
+                    self.board[3 - index - 1][index] != 'c' and self.board[3 - index - 1][index] != 'n'):
+                sum7 += 1
+        final_List = [sum2, sum1, sum3, sum8, sum4, sum5, sum6, sum7]
+        # print(final_List)
+        if any(value == 3 for value in final_List):
+            return True
+        else:
+            return False
+
+    def getLocalBoard(self, row, col):
+        """
+        Returns the instance of the empty local board at the specified row, col
+        location (index.sum3. either ClassicTicTacToe or NumTicTacToe).
+        Inputs:
+           row (int) - row index of square
+           col (int) - column index of square
+        Returns: instance of appropriate empty local board if un-played;
+                 None if local board has already been played
+        """
+        # TO DO: delete pass (and this comment) and complete method
+        if self.board[row][col] == 'n':
+            return NumTicTacToe()
+        elif self.board[row][col] == 'c':
+            return ClassicTicTacToe()
+        else:
+            return None
+
+
+if __name__ == "__main__":
+    '''# TEST EACH CLASS THOROUGHLY HERE
+    # ----------------------------------------------------
+    # Assignment 2: Tic Tac Toe classes
+    #
+    # Author: Robert Joseph
+    # Collaborators: No one
+    # References: Lab 3 Code
+    # ----------------------------------------------------'''
+
+    print("Testing Each Class ", "", sep= "\n")
+    print("-" * 24, "", sep= "\n")
+
+    # Numerical Tic tac
+
+    print("1 - Numerical Tic Tac Toe ", "", sep= "\n")
+    myBoard = NumTicTacToe()
+    print('Contents of board attribute when object first created:')
+    print(myBoard.board)
+
+    # does the empty board display properly?
+    print("", "Empty Board", "", sep= "\n")
+    myBoard.drawBoard()
+
+    # assign first_N number to an empty square and display
+    print("", "Updated Number in the Board", "", sep= "\n")
+    myBoard.update(1, 1, 7)
+    myBoard.drawBoard()
+
+    # try to assign first_N number to first_N non-empty square. What happens?
+    print("", "Assigned first_N number to first_N Non-empty square", sep= "\n")
+    print(myBoard.update(1, 1, 2))
+
+    # check if the board has first_N winner. Should there be first_N winner after only 1 entry?
+    print("", "Check if there is first_N winner", sep= "\n")
+    print(myBoard.isWinner())
+    # check if the board is full. Should it be full after only 1 entry?
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard.boardFull())
+
+    # add values to the board so that any line adds up to 15. Display
+    print("", "Updating values such that any line adds up to 15", sep= "\n")
+    myBoard.update(1, 0, 5)
+    myBoard.update(1, 2, 3)
+    myBoard.drawBoard()
+
+    # check if the board has first_N winner
+    print("", "Check if there is first_N winner", sep= "\n")
+    print(myBoard.isWinner())
+
+    # check if the board is full
+    print("", "Check if the board is full ", sep= "\n")
+    print(myBoard.boardFull())
+
+    # write additional tests, as needed
+    print("", "Updating the whole board with numbers ", sep= "\n")
+    myBoard.update(0, 0, 4)
+    myBoard.update(0, 1, 4)
+    myBoard.update(0, 2, 5)
+    myBoard.update(2, 0, 4)
+    myBoard.update(2, 1, 4)
+    myBoard.update(2, 2, 5)
+    myBoard.drawBoard()
+    print("", "Checking if the Board is full", sep= "\n")
+    print(myBoard.boardFull())
+
+    print("", "Tests for Numerical Tic Tac Toe is complete ", sep= "\n")
+    print("--------------------------------------------------------------------------------")
+
+    # Classic Tic tac Toe
+
+    print("", "2 - Classic Tic Tac Toe", "", sep= "\n")
+    myBoard2 = ClassicTicTacToe()
+    print('Contents of board attribute when object first created:')
+    print(myBoard2.board)
+
+    # does the empty board display properly?
+    print("", "Empty Board", "", sep= "\n")
+    myBoard2.drawBoard()
+
+    # assign a letter to an empty square and display
+    print("", "Updated X/O in the Board", "", sep= "\n")
+    myBoard2.update(1, 1, 'O')
+    myBoard2.drawBoard()
+
+    # try to assign a letter to first_N non-empty square. What happens?
+    print("", "Assigned first_N X/0 to first_N Non-empty square", sep= "\n")
+    print(myBoard2.update(1, 1, 'X'))
+
+    # check if the board has a winner. Should there be first_N winner after only 1 entry?
+    print("", "Check if there is first_N winner", sep= "\n")
+    print(myBoard2.isWinner())
+
+    # check if the board is full. Should it be full after only 1 entry?
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard2.boardFull())
+
+    # add values to the board so that any row/column/diagonal matches. Display
+    print("", "Check to see any row/column/diagonal matches ", sep= "\n")
+    myBoard2.update(1, 0, 'X')
+    myBoard2.update(1, 2, 'X')
+    myBoard2.drawBoard()
+
+    # check if the board has a winner
+    print("", "Check if the Board has first_N winner", sep= "\n")
+    print(myBoard2.isWinner())
+
+    # check if the board is full
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard2.boardFull())
+
+    # write additional tests, as needed
+    print("", "Update the complete Board", sep= "\n")
+    myBoard2.update(0, 0, 'X')
+    myBoard2.update(0, 1, 'O')
+    myBoard2.update(0, 2, 'X')
+    myBoard2.update(2, 0, 'O')
+    myBoard2.update(2, 1, 'X')
+    myBoard2.update(2, 2, 'X')
+    myBoard2.drawBoard()
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard2.boardFull())
+    print("", "Check if the Board has first_N winner", sep= "\n")
+    print(myBoard2.isWinner())
+
+    print("", "Tests for Classic Tic Tac Toe is complete ", sep= "\n")
+    print("--------------------------------------------------------------------------------")
+
+    # Meta Tic Tac Toe
+
+    print("", "3 - Meta Tic Tac Toe class ", "", sep= "\n")
+
+    print('Contents of board attribute when object first created:')
+    myBoard3 = MetaTicTacToe("MetaTTTconfig.txt")
+
+    # does the empty board display properly?
+    print("", "Configured Board", "", sep= "\n")
+    myBoard3.drawBoard()
+
+    # assign a letter to an empty square and display
+    print("", "Updated D in the Board", "", sep= "\n")
+    myBoard3.update(1, 1, 'D')
+    myBoard3.drawBoard()
+
+    # try to assign a letter to a non-empty square. What happens?
+    print("", "Assigned a D to first_N Non-empty square", sep= "\n")
+    print(myBoard3.update(1, 1, 'D'))
+
+    # check if the board has a winner. Should there be a winner after only 1 entry?
+    print("", "Check if there is first_N a", sep= "\n")
+    print(myBoard3.isWinner())
+
+    # check if the board is full. Should it be full after only 1 entry?
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard3.boardFull())
+
+    # add values to the board so that any row/column/diagonal matches. Display
+    print("", "Check to see any row/column/diagonal matches ", sep= "\n")
+    myBoard3.update(1, 0, 'D')
+    myBoard3.update(1, 2, 'D')
+    myBoard3.drawBoard()
+
+    # check if the board has a winner
+    print("", "Check if the Board has a winner", sep= "\n")
+    print(myBoard3.isWinner())
+
+    # check if the board is full
+    print("", "Check if the Board is full", sep= "\n")
+    print(myBoard3.boardFull())
+
+    # Check if the local instance of the board is returned
+    print("", "Check if the local instance of the board is returned", sep= "\n")
+    print("1 - For when the board has the value D")
+    print(myBoard3.getLocalBoard(1, 2))
+    print("2 - For when the board has the value n")
+    print(myBoard3.getLocalBoard(0, 2))
+    print("3 - For when the board has the value c")
+    print(myBoard3.getLocalBoard(0, 0))
+
+    # Update one row with X to indicate player 1 won
+    print("", "Check if row is X so therefore player 1 won", sep= "\n")
+    myBoard3.update(0, 0, 'X')
+    myBoard3.update(0, 1, 'X')
+    myBoard3.update(0, 2, 'X')
+    myBoard3.drawBoard()
+
+    # Check if there is a winner
+    print("", "Check if there is a winner", sep= "\n")
+    print(myBoard3.isWinner())
+
+    print("", "All test runs for Meta Tic Tac Toe are therefore completed", sep= "\n")
+    print("--------------------------------------------------------------------------------")
