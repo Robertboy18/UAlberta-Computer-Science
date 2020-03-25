@@ -1,0 +1,77 @@
+def decrypt(number, message):
+    """
+    This function decrypts a message.
+
+    It then takes the key mod 26
+    It then checks if its a cap or small and then minuses the key length to get the desired character
+    It then returns the decrypted text in all lower case
+
+    :parameter
+    number (int): The key
+    message (string): The encrypted message
+
+    :return
+    string: The decrypted message
+    """
+    Final_Message = [letter for letter in message]
+    length = len(message)
+    key = (number % 26)
+    for index in range(length):
+        if index == ' ':
+            Final_Message[index] = ' '
+        elif 65 <= ord(message[index]) <= 90:
+            if (ord(message[index]) - key) >= 65:
+                Final_Message[index] = chr(ord(message[index]) - key)
+            else:
+                Final_Message[index] = chr(90 - (65 - (ord(message[index]) - key)) + 1)
+        elif 97 <= ord(message[index]) <= 122:
+            if (ord(message[index]) - key) >= 97:
+                Final_Message[index] = chr(ord(message[index]) - key)
+            else:
+                Final_Message[index] = chr(122 - (97 - (ord(message[index]) - key)) + 1)
+
+    return ''.join(Final_Message).lower()
+
+
+def getInputFile():
+    """
+    This function asks the user for the input file name and checks if its valid or not.
+
+    It contains a while loop till the valid file name is entered
+    It then calls the decrypt function and decrypts the message
+
+    :parameter
+    None
+
+    :return
+    None
+    """
+    print("Enter the input filename:")
+    while True:
+        try:
+            filename = input()
+            fil = open(filename, "r+")
+            i = fil.read()
+            key_message = i.split("\n")
+            print("The decrypted message is: " + decrypt(int(key_message[0]), key_message[1]))
+        except:
+            print("Invalid filename extension. Please re-enter the input filename:")
+            continue
+        else:
+            break
+
+
+def main():
+    """
+    The main function.
+
+    :parameter
+    None
+
+    :return
+    None
+    """
+    getInputFile()
+
+
+main()
