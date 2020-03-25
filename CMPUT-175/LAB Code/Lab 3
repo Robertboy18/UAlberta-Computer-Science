@@ -1,0 +1,212 @@
+class NumTicTacToe:
+    def __init__(self):
+        """
+        Initializes an empty Numerical Tic Tac Toe board.
+        Inputs: none
+        Returns: None
+        """
+        self.board = []  # list of lists, where each internal list represents a row
+        self.size = 3  # number of columns and rows of board
+
+        # populate the empty squares in board with 0
+        for i in range(self.size):
+            row = []
+            for j in range(self.size):
+                row.append(0)
+            self.board.append(row)
+
+    def drawBoard(self):
+        """
+        Displays the current state of the board, formatted with column and row
+        indicies shown.
+        Inputs: none
+        Returns: None
+        """
+        # TO DO: delete pass and print out formatted board
+        # e.g. an empty board should look like this:
+        #    0   1   2
+        # 0    |   |
+        #   -----------
+        # 1    |   |
+        #   -----------
+        # 2    |   |
+
+        """if all(self.board[i][j] == 0 for i in range(self.size) for j in range(self.size)):
+            print("   0   1   2")
+            print("0    |   |  ")
+            print("   -----------")
+            print("1    |   |  ")
+            print("   -----------")
+            print("2    |   |  ")
+        else:"""
+        print("   0   1   2")
+        k = 0
+        n = 0
+        for i in self.board:
+            t = i[0]
+            b = i[1]
+            c = i[2]
+            if i[0] == 0:
+                t = ' '
+            if i[1] == 0:
+                b = ' '
+            if i[2] == 0:
+                c = ' '
+            print(str(k) + "  %s |" % str(t) + " %s |" % (str(b)) + " %s" % (str(c)))
+            n += 1
+            if n != 3:
+                print("   -----------")
+            k += 1
+
+    def squareIsEmpty(self, row, col):
+        '''
+        Checks if a given square is empty, or if it already contains a number
+        greater than 0.
+        Inputs:
+           row (int) - row index of square to check
+           col (int) - column index of square to check
+        Returns: True if square is empty; False otherwise
+        '''
+        # TO DO: delete pass and complete method
+        if self.board[row][col] > 0:
+            return False
+        else:
+            return True
+
+    def update(self, row, col, num):
+        """
+        Assigns the integer, num, to the board at the provided row and column,
+        but only if that square is empty.
+        Inputs:
+           row (int) - row index of square to update
+           col (int) - column index of square to update
+           num (int) - entry to place in square
+        Returns: True if attempted update was successful; False otherwise
+        """
+        # TO DO: delete pass and complete method
+        if self.board[row][col] == 0:
+            self.board[row][col] = num
+            return True
+        else:
+            return False
+
+    def boardFull(self):
+        '''
+        Checks if the board has any remaining empty squares.
+        Inputs: none
+        Returns: True if the board has no empty squares (full); False otherwise
+        '''
+        if any(self.board[i][j] == 0 for i in range(self.size) for j in range(self.size)):
+            return False
+        else:
+            return True
+
+    def isWinner(self):
+        """
+        Checks whether the current player has just made a winning move.  In order
+        to win, the player must have just completed a line (of 3 squares) that
+        adds up to 15. That line can be horizontal, vertical, or diagonal.
+        Inputs: none
+        Returns: True if current player has won with their most recent move;
+                 False otherwise
+        """
+        # TO DO: delete pass and complete
+        c, d, e, k = 0, 0, 0, 0
+        m, n, t = 0, 0, 0
+        for i in range(self.size):
+            c += self.board[i][0]
+            d += self.board[i][1]
+            e += self.board[i][2]
+            k += self.board[0][i]
+            m += self.board[1][i]
+            n += self.board[2][i]
+            t += self.board[i][i]
+
+        z = self.board[0][2] + self.board[1][1] + self.board[2][0]
+        if c == 15 or d == 15 or e == 15 or k == 15 or m == 15 or n == 15 or t == 15 or z == 15:
+            return True
+        else:
+            return False
+
+
+if __name__ == "__main__":
+    # TEST EACH METHOD THOROUGHLY HERE
+    # suggested tests are provided as comments, but more tests may be required
+
+    # start by creating empty board and checking the contents of the board attribute
+    myBoard = NumTicTacToe()
+    print('Contents of board attribute when object first created:')
+    print(myBoard.board)
+    # does the empty board display properly?
+    myBoard.drawBoard()
+
+    # assign a number to an empty square and display
+    print("                            ")
+    myBoard.update(1, 1, 7)
+    myBoard.drawBoard()
+    # try to assign a number to a non-empty square. What happens?
+    print("                            ")
+    print(myBoard.update(1, 1, 2))
+
+    # check if the board has a winner. Should there be a winner after only 1 entry?
+    print("                            ")
+    print(myBoard.isWinner())
+    # check if the board is full. Should it be full after only 1 entry?
+    print("                            ")
+    print(myBoard.boardFull())
+
+    # add values to the board so that any line adds up to 15. Display
+    print("                            ")
+    myBoard.update(1, 0, 5)
+    myBoard.update(1, 2, 3)
+    myBoard.drawBoard()
+
+    # check if the board has a winner
+    print(myBoard.isWinner())
+
+    # check if the board is full
+    print("              ")
+    print(myBoard.boardFull())
+
+    # write additional tests, as needed
+    print("                     ")
+    myBoard.update(0, 0, 4)
+    myBoard.update(0, 1, 4)
+    myBoard.update(0, 2, 5)
+    myBoard.update(2, 0, 4)
+    myBoard.update(2, 1, 4)
+    myBoard.update(2, 2, 5)
+    myBoard.drawBoard()
+    print(myBoard.boardFull())
+
+    """
+    print("---------------------------------------")
+    print("Starting new Numerical Tic Tac Toe game")
+    print("---------------------------------------")
+    x = myBoard.isWinner()
+    while not x:
+        myBoard.drawBoard()
+        player1 = int(input("Player 1, please enter an odd number (1-9): "))
+        player1_r = int(input("Player 1, please enter a row: "))
+        player1_c = int(input("Player 1, please enter a column: "))
+        myBoard.update(player1_r, player1_c, player1)
+        myBoard.drawBoard()
+        x = myBoard.isWinner()
+        player2 = int(input("Player 2, please enter an even number (1-9): "))
+        player2_r = int(input("Player 2, please enter a row: "))
+        player2_c = int(input("Player 2, please enter a column: "))
+        myBoard.update(player2_r, player2_c, player2)
+        x = myBoard.isWinner()
+        z = myBoard.boardFull()
+        if z:
+            cont = input("Do you want to play another game? (Y/N) ")
+
+        if x:
+            print("Player 2 wins. Congrats!")
+            cont = input("Do you want to play another game? (Y/N) ")
+            if cont == 'y' or cont == 'n' or cont == 'Y' or cont == 'N':
+                myBoard.clear()
+                continue
+            else:
+                print("Thanks for playing! Goodbye.")
+        """
