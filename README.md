@@ -17,3 +17,24 @@ Students will learn how to use infrastructure tools and resources to solve compu
 **Pre-requisites**
 >Pure Math 30 or Math 30-1
 
+
+
+**Introduction to the Foundations of Computation II- CMPUT 175**
+
+**Overview**
+
+>CMPUT 174 and 175 provide an alternative path to the study of Computing Science. A problem-driven approach is used to introduce the fundamental ideas of computing. Emphasis is on the underlying process behind the solution, independent of programming language or style used to implement the solution.
+Basic notions of state, control flow, data structures, recursion, modularization, and testing are introduced through solving simple problems in a variety of domains, such as text analysis, map navigation, game search, simulation, and cryptography. Students learn to program by reading and modifying existing programs as well as writing new ones.
+
+**Objectives**
+
+>This two course sequence is a small introduction to the foundations of a major part of Computing Science: expressing problems precisely, solving them algorithmically by showing how to construct a solution, and then implementing that solution by writing a program.
+Our approach in this course is problem-driven. We will take a problem and attempt to solve it. In the process of developing an algorithmic solution, we will introduce key computing concepts. Our intention is that every abstract concept should be grounded in concrete examples.
+Our emphasis will be more on computation and problem solving than all the details of a particular programming language for implementing a solution. Our goal is to develop your intuitions for a variety of complementary styles of computation.
+
+**Pre-requisites**
+
+>CMPUT 174, SCI 100, or consent of the instructor. Basic knowledge of Python is assumed.
+
+
+
