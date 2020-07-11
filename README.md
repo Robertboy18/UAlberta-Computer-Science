@@ -1,5 +1,7 @@
 **University of Alberta**
-
+<hr>
+<img src = "https://enterprisequartetdotcom.files.wordpress.com/2012/09/ua1txt2.jpg">
+<hr>
 These are all the Computer Science Courses I am taking in my first year.
 
 **Fall Semester**
