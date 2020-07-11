@@ -1,10 +1,9 @@
-**University of Alberta**
-<hr>
 <img src = "https://enterprisequartetdotcom.files.wordpress.com/2012/09/ua1txt2.jpg">
 <hr>
 These are all the Computer Science Courses I am taking in my first year.
 
 **Fall Semester**
+<hr>
 
 **Introduction to the Foundations of Computation I- CMPUT 174**
 
@@ -21,7 +20,7 @@ Students will learn how to use infrastructure tools and resources to solve compu
 **Pre-requisites**
 >Pure Math 30 or Math 30-1
 
-
+<hr>
 **Winter Semester**
 
 **Introduction to the Foundations of Computation II- CMPUT 175**
