@@ -1,11 +1,11 @@
 <img src = "https://enterprisequartetdotcom.files.wordpress.com/2012/09/ua1txt2.jpg">
 <hr>
-These are all the Computer Science Courses I am taking in my first year.
 
-**Fall Semester**
+**Fall Semester 2019**
+
 <hr>
 
-**Introduction to the Foundations of Computation I- CMPUT 174**
+**1 - Introduction to the Foundations of Computation I- CMPUT 174**
 
 **Overview**
 
@@ -21,9 +21,10 @@ Students will learn how to use infrastructure tools and resources to solve compu
 >Pure Math 30 or Math 30-1
 
 <hr>
-**Winter Semester**
 
-**Introduction to the Foundations of Computation II- CMPUT 175**
+**Winter Semester 2020**
+
+**2 - Introduction to the Foundations of Computation II- CMPUT 175**
 
 **Overview**
 
@@ -40,11 +41,9 @@ Our emphasis will be more on computation and problem solving than all the detail
 
 >CMPUT 174, SCI 100, or consent of the instructor. Basic knowledge of Python is assumed.
 
+<hr>
 
-
-
-
-**Formal Systems and Logic in Computing Science - CMPUT 272**
+**3 - Formal Systems and Logic in Computing Science - CMPUT 272**
 
 **Overview**
 
