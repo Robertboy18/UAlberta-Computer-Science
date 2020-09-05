@@ -3,8 +3,6 @@
 
 **Fall Semester 2019**
 
-<hr>
-
 **1 - Introduction to the Foundations of Computation I- CMPUT 174**
 
 **Objectives**
