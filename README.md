@@ -24,6 +24,8 @@ Students will learn how to use infrastructure tools and resources to solve compu
 
 **Winter Semester 2020**
 
+<hr>
+
 **2 - Introduction to the Foundations of Computation II- CMPUT 175**
 
 **Overview**
@@ -63,4 +65,4 @@ communicate the correctness of their solutions.
 
 >Any 100-level CMPUT course or SCI 100 or CMPUT 274
 
-
+<hr>
