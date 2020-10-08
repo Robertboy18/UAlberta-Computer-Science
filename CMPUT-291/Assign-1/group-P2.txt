@@ -1,0 +1,175 @@
+######################################
+
+# Relation - 1 - Endorses
+
+CREATE TABLE users
+(email CHAR(20),
+name CHAR(20),
+pwd CHAR(20),
+city CHAR(20),
+gender CHAR(1),
+PRIMARY KEY (email)
+)
+
+CREATE TABLE endorses(
+email CHAR(20),
+rid INT,
+PRIMARY KEY (rid,email),
+FOREIGN KEY (email) REFERENCES users,
+FOREIGN KEY (rid) REFERENCES previews,
+)
+
+CREATE TABLE previews
+(rid INT,
+rtext CHAR(20),
+rating VARCHAR(255),
+rating INT,
+PRIMARY KEY (rid))
+
+#####################################
+
+# Relation - 2 Previewer
+
+CREATE TABLE preview_previewer(
+email CHAR(20) NOT NULL,
+rid INT NOT NULL,
+rtext CHAR(20),
+rating VARCHAR(255),
+rating INT,
+PRIMARY KEY (rid),
+FOREIGN KEY (email) REFERENCES users ON DELETE NO ACTION
+)
+
+##########################################
+
+# Relation - 3 - Reviews 
+
+CREATE TABLE reviews(
+"""
+email_reviewer CHAR(20),
+email_reviewee CHAR(20),
+"""
+email CHAR(20),
+rtext CHAR(20),
+rating INT,
+rdate DATE,
+email CHAR(20),
+FOREIGN KEY (email) REFERENCES users ON DELETE NO ACTION
+)
+
+############################################
+
+# Relation - 4 - Lists
+
+CREATE TABLE sale_lists(
+email CHAR(20),
+end_data DATE,
+descr CHAR(20),
+rprice INT,
+cond CHAR(20),
+sid INT,
+PRIMARY KEY (sid),
+FOREIGN KEY (sin) REFERENCES Employees
+ON DELETE NO ACTION
+)
+
+#################################################
+
+# Relation - 5 - ubids
+
+CREATE TABLE bids_ubids
+(
+email CHAR(20),
+bdate DATE,
+name CHAR(20),
+amount FLOAT,
+bid FLOAT,
+PRIMARY KEY (bid)
+FOREIGN KEY (email) REFERENCES users
+ON DELETE NO ACTION
+)
+
+######################################################
+
+# Relation - 6 - sbids
+
+CREATE TABLE bids_sbids
+(
+sid INT,
+bdate DATE,
+name CHAR(20),
+amount FLOAT,
+bid FLOAT,
+PRIMARY KEY (bid)
+FOREIGN KEY (sid) REFERENCES sale
+ON DELETE NO ACTION
+)
+
+######################################################
+
+# Relation - 7 - s_assoc
+
+CREATE TABLE products
+(pid INT,
+desc VARCHAR(255),
+PRIMARY KEY (pid))
+
+CREATE TABLE sale_s_assoc
+(
+sid INT,
+pid INT,
+email CHAR(20),
+end_data DATE,
+descr CHAR(20),
+rprice INT,
+cond CHAR(20),
+sid INT,
+PRIMARY KEY (sid),
+FOREIGN KEY (pid) REFERENCES products,
+FOREIGN KEY (Sid) REFERENCES sale,
+)
+
+######################################################
+
+# Relation - 8 - includes
+
+CREATE TABLE items_includes
+(
+sid INT,
+no INT,
+descr VARCHAR(255),
+PRIMARY KEY (no,sid)
+FOREIGN KEY (sid) REFERENCES sale
+ON DELETE NO CASCADE
+)
+
+######################################################
+
+# Relation - 9 - p_assoc
+
+CREATE TABLE items_p_assoc
+(
+pid INT,
+no INT,
+descr VARCHAR(255),
+PRIMARY KEY (no,pid)
+FOREIGN KEY (pid) REFERENCES products
+ON DELETE NO CASCADE
+)
+
+######################################################
+
+# Relation - 10 - previewed
+
+CREATE TABLE previewed
+(
+rid INT,
+pid INT,
+PRIMARY KEY (pid,rid)
+FOREIGN KEY (pid) REFERENCES products,
+FOREIGN KEY (rid) REFERENCES previews,
+)
+
+####################################################
+
+

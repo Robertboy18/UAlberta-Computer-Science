@@ -1,0 +1,9 @@
+Robert on Akrash ER model :
+A pretty well made ER Model. Followed the rules and most of it is covered except that
+there are minor mistakes such as number of tags must be a set value attribute instead.
+Well spaced out and various constraints are added.
+
+Robert on Tanya ER model :
+On first glance this model seems to be concise and well made. One mistake which I found out was that
+in the Badge Entity ; Class,Date is a joined super key however it is not minimal and hence not a key.
+On the other hand everything else is pretty much neat and follows the rules well.
