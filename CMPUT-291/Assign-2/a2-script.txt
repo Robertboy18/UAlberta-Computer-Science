@@ -1,0 +1,189 @@
+
+--Question 1
+select distinct users.uid from users,ubadges,posts,badges
+where badges.bname = ubadges.bname and badges.type = 'gold' and ubadges.uid = users.uid and title like "%?"
+and posts.poster = users.uid;
+u002
+u028
+u043
+
+--Question 2
+select distinct posts.pid, title from posts,tags
+where lower(tags.tag) = "relational" and lower(title) like "%?%" and tags.pid = posts.pid
+INTERSECT
+select distinct posts.pid, title from posts,tags
+where lower(tags.tag) = "database" and lower(title) like "%?%" and tags.pid = posts.pid
+UNION
+select distinct posts.pid, title from posts,tags
+where lower(title) like "%relational database%?%" and tags.pid = posts.pid;
+p001|What is a relational database?
+p012|what is a good Relational Database Software?
+p015|what do we learn in cmput291?
+
+--Question 3
+SELECT DISTINCT posts.pid,posts.title from posts,questions,answers
+where questions.pid = posts.pid
+EXCEPT
+select DISTINCT p1.pid,p1.title from posts p1,posts p2,questions,answers
+where p2.pid = answers.pid and p1.pid = questions.pid and questions.pid = answers.qid
+AND julianday(p2.pdate) - julianday(p1.pdate) <= 3;
+p003|Why use SQL?
+p012|what is a good Relational Database Software?
+p014|How do we model ER diagrams?
+p018|why do we learn sqlite3?
+p019|what is relational arithmetic?
+p020|What is the goal of this assignment?
+p027|is cmput291 difficult?
+
+
+--Question 4
+select DISTINCT p1.poster from posts p1,posts p2,questions,answers
+where questions.pid = p1.pid and answers.qid = questions.pid
+group by p1.poster
+having COUNT(DISTINCT questions.pid) > 2 and COUNT(DISTINCT answers.pid) > 2;
+u040
+u050
+
+--Question 5
+select p1.poster from posts p1,posts p2,questions,answers,votes v1,votes v2
+where questions.pid = p1.pid and answers.pid = p2.pid and p2.poster = p1.poster and v1.pid = p1.pid and v2.pid = p2.pid
+group by p1.poster
+having SUM(DISTINCT v1.vno) + SUM(DISTINCT V2.vno) > 4;
+u028
+u035
+
+
+--Question 6
+SELect tags.tag,COUNT(votes.vno),count(DISTINCT posts.pid) from tags,posts,votes
+where votes.pid = posts.pid AND tags.pid = posts.pid
+group by tags.tag
+ORDER BY COUNT(votes.vno) DESC LIMIT 3;
+sleep|70|3
+fun|70|3
+boring|46|2
+
+--Question 7
+select p1.pdate,t1.tag,COUNT(t1.tag) as val from tags t1, tags t2,posts p1
+where p1.pid = t1.pid and t1.tag = t2.tag
+GROUP by p1.pdate,t1.tag;
+2020-09-09|CMPUT291|1
+2020-09-09|computing|1
+2020-09-09|database|8
+2020-09-09|frequentTag1|4
+2020-09-09|relational|14
+2020-09-09|sql|4
+2020-09-09|tieTag1|4
+2020-09-10|Database|3
+2020-09-10|data|1
+2020-09-10|relational|7
+2020-09-10|sql|4
+2020-09-12|Database|3
+2020-09-12|Sql language|1
+2020-09-12|access|1
+2020-09-12|frequentTag3|10
+2020-09-12|query|15
+2020-09-12|relational|21
+2020-09-12|sql|4
+2020-09-16|Database|3
+2020-09-16|frequentTag3|15
+2020-09-16|query|5
+2020-09-16|relational|7
+2020-09-16|sql|4
+2020-09-16|sql language|3
+2020-09-19|RELATIONAL|1
+2020-09-19|database|4
+2020-09-19|query|5
+2020-09-19|sql language|3
+2020-09-24|database|4
+2020-09-24|sql language|3
+2020-09-29|boring|4
+2020-09-29|extra tag|1
+2020-09-29|fun|9
+2020-09-29|just here|1
+2020-09-29|more tag|1
+2020-09-29|sleep|9
+2020-09-29|tag tag|1
+2020-09-29|tag test|1
+2020-09-29|test tag|1
+
+--Question 8
+select users.uid, COUNT(DISTINCT p1.pid),COUNT(DISTINCT p2.pid),count(DISTINCT v1.vno),COUNT(distinct v2.vno)
+from users, questions,answers
+left join posts p2 on p2.poster = users.uid and answers.qid = p2.pid or questions.theaid = answers.pid
+LEFT JOIN posts p1 on P1.poster = users.uid and questions.pid = p1.pid
+left join votes as v1 on v1.uid = users.uid
+LEFT Join votes as v2 on v2.uid = users.uid or v2.pid = p2.pid
+GROUP BY users.uid;
+u001|0|0|1|1
+u002|1|1|2|6
+u003|0|0|2|2
+u004|0|0|1|1
+u005|0|0|3|3
+u006|0|0|3|3
+u007|0|0|3|3
+u008|0|0|1|1
+u009|0|0|3|3
+u010|0|0|1|1
+u011|0|0|1|1
+u012|0|0|2|2
+u013|0|0|1|1
+u014|0|0|1|1
+u015|0|0|2|2
+u016|0|0|1|1
+u017|0|0|2|2
+u018|0|0|0|0
+u019|0|0|0|0
+u020|0|0|0|0
+u021|0|0|2|2
+u022|0|0|1|1
+u023|1|1|0|0
+u024|0|0|2|2
+u025|0|0|0|0
+u026|0|0|0|0
+u027|0|0|0|0
+u028|1|0|0|0
+u029|0|0|0|0
+u030|3|2|1|1
+u031|0|0|0|0
+u032|0|0|2|2
+u033|0|0|0|0
+u034|0|0|1|1
+u035|1|1|0|24
+u036|0|0|0|0
+u037|0|0|0|0
+u038|0|0|1|1
+u039|0|0|0|0
+u040|3|3|0|1
+u041|0|0|0|0
+u042|0|0|0|0
+u043|1|0|2|2
+u044|0|0|1|1
+u045|0|0|0|0
+u046|0|0|0|0
+u047|0|0|0|0
+u048|0|0|0|0
+u049|1|1|0|22
+u050|3|3|0|1
+
+--Question 9
+create view questionInfo(pid, uid, theaid, voteCnt,ansCnt) as select DISTINCT q1.pid,p1.poster,q1.theaid,COUNT(DISTINCT votes.vno),COUNT(DISTINCT answers.qid)
+from posts p1,questions q1
+LEFT join answers on q1.pid = answers.qid
+LEFT JOIN votes on votes.pid = q1.pid
+where q1.pid = p1.pid AND p1.pdate >  datetime('2020-09-01')
+GROUP BY q1.pid;
+
+--Question 10
+select users.city,count(users.city) from users
+group by users.city;
+Calgary|2
+Edmonton|6
+Halifax|7
+Ottawa|3
+Quebec City|4
+Regina|4
+Toronto|9
+Vancouver|5
+Victoria|4
+Whitehouse|1
+Winnipeg|5
