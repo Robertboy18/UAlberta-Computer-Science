@@ -1,0 +1,111 @@
+.print Question 1 - drafiei
+select distinct ub.uid
+from ubadges ub, badges b, posts p, questions q
+where ub.bname=b.bname and ub.uid = p.poster and p.pid=q.pid and
+  b.type='gold';
+
+.print Question 2 - drafiei
+select distinct p.pid, p.title
+from posts p, questions q, tags t1, tags t2
+where p.pid=q.pid and p.pid=t1.pid and p.pid=t2.pid and
+  (lower(p.title) like '%relational database%' or lower(t1.tag)='relational') and
+  (lower(p.title) like '%relational database%' or lower(t2.tag)='database');
+
+.print Question 3 - drafiei
+select qp.pid, qp.title
+from questions q, posts qp
+where q.pid=qp.pid
+  except
+select qp.pid, qp.title
+from questions q, posts qp, answers a, posts ap
+where q.pid=qp.pid and a.pid=ap.pid and a.qid=q.pid and date(qp.pdate, '+3 days') >= ap.pdate;
+
+.print Question 4 - drafiei
+select qp.poster
+from posts qp, questions q, posts ap, answers a
+where q.pid=qp.pid and a.pid=ap.pid and a.qid=q.pid and
+qp.poster=ap.poster
+group by qp.poster
+having count (distinct qp.pid) >2;
+
+.print Question 5 - drafiei
+select poster
+from posts p, questions q
+where p.pid=q.pid
+  intersect
+select poster
+from posts p, answers a
+where p.pid=a.pid
+  intersect
+select poster
+from posts p, votes v
+where p.pid=v.pid
+group by poster
+having count(*) >4;
+
+.print Question 6 - drafiei
+select t.tag, count(distinct t.pid), count(vno)
+from tags t left outer join votes v on t.pid=v.pid
+group by t.tag
+order by count(vno) desc
+limit 3;
+
+.print Question 7 - drafiei
+select date(pdate) as day, tag, count(*)
+from posts p, tags t
+where p.pid=t.pid
+group by date(pdate), tag
+having count(*) >= (select max(cnt)
+	            from (select count(*) as cnt
+                          from posts p2, tags t2
+                          where p2.pid=t2.pid and p2.pdate=p.pdate
+                          group by t2.tag));
+
+.print Question 8 - drafiei
+select u.uid, ifnull(qstat.cnt,0) as q_count, ifnull(astat.cnt,0) as a_count, ifnull(vcast.cnt,0) as votes_casted, ifnull(vrec.cnt,0) as votes_recived
+from users u left outer join
+  (select poster, count(*) as cnt
+   from posts p, questions q
+   where p.pid=q.pid
+   group by poster) qstat on u.uid=qstat.poster left outer join
+  (select poster, count(*) as cnt
+   from posts p, answers a
+   where p.pid=a.pid
+   group by poster) astat on u.uid=astat.poster left outer join
+  (select uid, count(*) as cnt
+   from votes
+   group by uid) as vcast on u.uid=vcast.uid left outer join
+  (select poster, count(*) as cnt
+   from posts p, votes v
+   where p.pid=v.pid
+   group by poster) as vrec on u.uid=vrec.poster
+where ifnull(qstat.cnt,0)>0 or ifnull(astat.cnt,0)>0 or ifnull(vcast.cnt,0)>0
+  or ifnull(vrec.cnt,0)>0;
+
+.print Question 9 - drafiei
+drop view if exists questionInfo;
+create view questionInfo (pid, uid, theaid, voteCnt, ansCnt)  as
+select p.pid, p.poster, q.theaid, ifnull(count(distinct vno),0), ifnull(count(distinct a.pid),0)
+from questions q left outer join posts p on q.pid=p.pid
+     left outer join votes v on q.pid=v.pid
+     left outer join answers a on q.pid=a.qid
+where p.pdate > date ('now','-1 month')
+group by p.pid, p.poster, q.theaid;
+
+.print Question 10 - drafiei
+select u.city, count(distinct u.uid), ifnull(gold.gcnt,0),
+  (ifnull(count(distinct qv.pid),0)*1.0)/count(distinct u.uid), 
+  ifnull(sum(vcnt),0)
+from users u left outer join 
+     (select u.city, count(*) gcnt
+      from users u, ubadges ub, badges b
+      where u.uid=ub.uid and ub.bname=b.bname and type='gold'
+      group by u.city) gold on u.city=gold.city
+     left outer join posts p on u.uid=p.poster
+     left outer join questionInfo qv on p.pid=qv.pid
+     left outer join 
+     (select p2.pid, count(*) vcnt
+      from posts p2, votes v
+      where p2.pid=v.pid and p2.pdate > date ('now','-1 month')
+      group by p2.pid) vv on p.pid=vv.pid
+group by u.city, gold.gcnt;
