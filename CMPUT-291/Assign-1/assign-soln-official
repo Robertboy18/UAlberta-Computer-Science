@@ -1,0 +1,97 @@
+drop table if exists items;
+drop table if exists bids;
+drop table if exists sale;
+drop table if exists previewed;
+drop table if exists products;
+drop table if exists endorses;
+drop table if exists previews;
+drop table if exists reviews;
+drop table if exists users;
+
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE users (
+  email		text,
+  name		text,
+  pwd		text,
+  city		text
+  gender	char(1),
+  PRIMARY KEY(email)
+);
+
+CREATE TABLE reviews (
+  reviewer	text,
+  reviewee	text,
+  rating	int,
+  rtext		text,
+  rdate		date,
+  primary key (reviewer, reviewee),
+  foreign key (reviewer) references users,
+  foreign key (reviewee) references users
+);
+
+CREATE TABLE previews (
+  rid		char(4),
+  rdate		date,
+  rating	int,
+  rtext		text,
+  reviewer   	text not null,
+  PRIMARY KEY (rid),
+  foreign key (reviewer) references users
+);
+
+CREATE TABLE	endorses (
+  email		text,
+  rid		char(4),
+  primary key (email, rid),
+  foreign key (email) references users,
+  foreign key (rid) references previews
+);
+
+CREATE TABLE products (
+  pid		char(4),
+  descr		text,
+  primary key (pid)
+);
+
+CREATE TABLE previewed (
+  rid		char(4),
+  pid		char(4),
+  primary key (rid,pid),
+  foreign key (rid) references previews,
+  foreign key (pid) references products
+);
+
+CREATE TABLE sale (
+  sid		char(4),
+  descr		text,
+  cond		text,
+  rprice	int,
+  end_date	date,
+  lister	text not null,
+  pid		char(4),
+  primary key (sid),
+  foreign key (lister) references users,
+  foreign key (pid) references products
+);  
+
+CREATE TABLE bids (
+  bid		char(4),
+  bdate		date,
+  amount	float,
+  sid		char(4) not null,
+  bidder	text not null,
+  primary key (bid),
+  foreign key (bidder) references users,
+  foreign key (sid) references sale
+);
+
+CREATE TABLE items (
+  sid		char(4) not null,
+  no		int,
+  descr		text,
+  pid		char(4),
+  primary key (sid,no),
+  foreign key (pid) references products,
+  foreign key (sid) references sale on delete cascade
+);
